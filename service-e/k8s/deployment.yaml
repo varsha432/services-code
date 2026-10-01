@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-e
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-e
+  template:
+    metadata:
+      labels:
+        app: service-e
+    spec:
+      containers:
+      - name: service-e
+        image: PLACEHOLDER_IMAGE
+        ports:
+        - containerPort: 8085
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8085
+          initialDelaySeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8085
+          initialDelaySeconds: 10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-e
+spec:
+  selector:
+    app: service-e
+  ports:
+  - port: 80
+    targetPort: 8085

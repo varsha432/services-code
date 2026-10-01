@@ -1,0 +1,22 @@
+name: service-d
+
+on:
+  push:
+    paths:
+      - "service-d/**"
+      - ".github/workflows/service-d.yml"
+      - ".github/workflows/reusable-service-ci.yml"
+
+  pull_request:
+    paths:
+      - "service-d/**"
+      - ".github/workflows/service-d.yml"
+      - ".github/workflows/reusable-service-ci.yml"
+
+jobs:
+  ci:
+    uses: ./.github/workflows/reusable-service-ci.yml
+    with:
+      service_name: service-d
+      dockerfile: service-d/Dockerfile
+      context: service-d
